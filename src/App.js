@@ -1,5 +1,10 @@
 import React, { useState, useCallback, useRef } from "react";
 import produce from "immer";
+
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import StopIcon from "@mui/icons-material/Stop";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 import "./App.css";
 
 const numRows = 30;
@@ -14,6 +19,15 @@ const operations = [
   [-1, -1],
   [1, 0],
   [-1, 0],
+];
+
+const patterns = [
+  "Blinker",
+  "Beacon",
+  "Glider",
+  "Pulsar",
+  "Penta-decathlon",
+  "Light-weight spaceship",
 ];
 
 const generateEmptyGrid = () => {
@@ -116,18 +130,37 @@ function App() {
             }
           }}
         >
-          {running ? "STOP" : "START"}
+          {running ? (
+            <StopIcon sx={{ fontSize: 40 }} />
+          ) : (
+            <PlayArrowIcon sx={{ fontSize: 40 }} />
+          )}
         </button>
         <button
           onClick={() => {
             setGrid(generateEmptyGrid());
           }}
         >
-          CLEAR
+          <DeleteForeverIcon sx={{ fontSize: 40 }} />
         </button>
+
+        {/* Increase/Decrease game speed */}
         <button onClick={decreaseSpeed}>-</button>
         <h3 style={{ color: "#ffffff", marginRight: "8px" }}>{time}</h3>
         <button onClick={increaseSpeed}>+</button>
+
+        {/* Input Patterns */}
+        <input
+          type="text"
+          list="items"
+          placeholder="Patterns"
+          className="patterns-input"
+        />
+        <datalist id="items">
+          {patterns.map((p) => {
+            return <option value={p} />;
+          })}
+        </datalist>
       </div>
     </div>
   );

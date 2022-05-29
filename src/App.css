@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  filter: drop-shadow(0px 10px 12px #00000026);
 }
 
 .board-container {
@@ -22,12 +23,12 @@
 button {
   display: flex;
 
-  width: 180px;
+  width: 72px;
   justify-content: center;
   padding: 16px;
   margin-right: 8px;
   border: none;
-  border-radius: 20px;
+  border-radius: 40px;
 
   font-family: "Poppins", sans-serif;
   font-size: 24px;
@@ -35,4 +36,20 @@ button {
   color: #ffffff;
 
   background-color: #ff79c6;
+}
+
+.patterns-input {
+  width: 220px;
+  padding: 8px;
+  border: none;
+  color: #fff;
+  border-radius: 32px;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #bd93f9;
+}
+
+.patterns-input:focus {
+  background-color: #a16ee7;
 }
