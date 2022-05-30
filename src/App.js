@@ -32,37 +32,37 @@ const patterns = [
 
 const generateEmptyGrid = () => {
   const rows = [];
+  // 1 array padre con 30 arrays (hijos) con 50 elementos (0) cada uno
+  // se crea un nuevo array contenedor donde se insertan tantos array (hijos) como *numCols* establecidos externamente
+  // cada array hijo posee un numero en su interior (0)
   for (let i = 0; i < numRows; i++) {
     rows.push(Array.from(Array(numCols), () => 0));
   }
-
   return rows;
 };
 
 function App() {
+  // Se establecen los estados iniciales
+  // • para el tablero:
   const [grid, setGrid] = useState(() => {
     return generateEmptyGrid();
   });
+  // • para el tiempo:
   const [time, setTime] = useState(300);
+
   const [running, setRunning] = useState(false);
   const runningRef = useRef(running);
   runningRef.current = running;
 
-  const increaseSpeed = () => {
-    setTime(time + 100);
-  };
-
-  const decreaseSpeed = () => {
-    setTime(time - 100);
-  };
-
   const runSimulation = useCallback(() => {
+    // se va a re-reenderizar cada vez que el valor del estado *time* se actualice
     if (!runningRef.current) {
       return;
     }
 
     setGrid((g) => {
       return produce(g, (gridCopy) => {
+        // 2 bucles for para recorrer tanto filas como columnas
         for (let i = 0; i < numRows; i++) {
           for (let k = 0; k < numCols; k++) {
             let neighbors = 0;
@@ -84,8 +84,18 @@ function App() {
       });
     });
 
-    setTimeout(runSimulation, time);
+    // funcion recursiva
+    setTimeout(runSimulation, time); 
   }, [time]);
+
+  // Features
+  const increaseSpeed = () => {
+    setTime(time + 100);
+  };
+
+  const decreaseSpeed = () => {
+    setTime(time - 100);
+  };
 
   return (
     <div className="game-container">
