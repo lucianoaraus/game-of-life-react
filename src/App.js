@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import produce from "immer";
 
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -47,15 +47,19 @@ function App() {
   const [grid, setGrid] = useState(() => {
     return generateEmptyGrid();
   });
-  // • para el tiempo:
+  // • para el tiempo de cada turno:
   const [time, setTime] = useState(300);
+  // • para la generacion (*):
+  // (*): cada generacion se cuenta al pasar un turno
+  const [generation, setGeneration] = useState(0);
 
   const [running, setRunning] = useState(false);
   const runningRef = useRef(running);
   runningRef.current = running;
 
   const runSimulation = useCallback(() => {
-    // se va a re-reenderizar cada vez que el valor del estado *time* se actualice
+    // Se va a re-reenderizar cada vez que el valor del estado *time* se actualice
+
     if (!runningRef.current) {
       return;
     }
@@ -83,18 +87,38 @@ function App() {
         }
       });
     });
-
-    // funcion recursiva
-    setTimeout(runSimulation, time); 
+    // Se llama a la funcion recursiva
+    setTimeout(runSimulation, time);
   }, [time]);
 
   // Features
   const increaseSpeed = () => {
-    setTime(time + 100);
+    // MAX-speed -> 2000ms
+    time <= 1900 && setTime(time + 100);
   };
 
   const decreaseSpeed = () => {
-    setTime(time - 100);
+    // MIN-speed -> 0ms
+    time >= 100 && setTime(time - 100);
+  };
+
+  useEffect(() => {
+    // Se define la primera iteracion cuando empieza a correr:
+    runningRef.current && setGeneration(generation + 1);
+    // Se definen las siguientes iteraciones si ya esta corriendo:
+    if (runningRef.current) {
+      const interval = window.setInterval(() => {
+        setGeneration((generation) => generation + 1);
+      }, time);
+      return () => window.clearInterval(interval);
+    }
+    return undefined;
+  }, [runningRef.current]);
+
+  const resetGame = () => {
+    setGrid(generateEmptyGrid());
+    setGeneration(0);
+    setRunning(false);
   };
 
   return (
@@ -146,11 +170,7 @@ function App() {
             <PlayArrowIcon sx={{ fontSize: 40 }} />
           )}
         </button>
-        <button
-          onClick={() => {
-            setGrid(generateEmptyGrid());
-          }}
-        >
+        <button onClick={resetGame}>
           <DeleteForeverIcon sx={{ fontSize: 40 }} />
         </button>
 
@@ -171,6 +191,9 @@ function App() {
             return <option value={p} />;
           })}
         </datalist>
+      </div>
+      <div style={{ alignItems: "center", color: "#ffffff" }}>
+        <h3>Generation {generation}</h3>
       </div>
     </div>
   );
