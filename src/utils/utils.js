@@ -2,6 +2,7 @@ const numRows = 30;
 const numCols = 50;
 
 const operations = [
+  // Direcciones posibles
   [0, 1],
   [0, -1],
   [1, -1],

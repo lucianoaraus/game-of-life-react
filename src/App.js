@@ -16,7 +16,7 @@ import {
 } from "./utils/utils";
 
 // Styles
-import "./App.css";
+import "./App.scss";
 
 function App() {
   // Se establecen los estados iniciales
@@ -31,7 +31,7 @@ function App() {
   const [generation, setGeneration] = useState(0);
 
   const [running, setRunning] = useState(false);
-  const runningRef = useRef(running);
+  const runningRef = useRef(running); // Crea una referencia mutable del objeto **running**
   runningRef.current = running;
 
   const runSimulation = useCallback(() => {
@@ -43,22 +43,27 @@ function App() {
 
     setGrid((g) => {
       return produce(g, (gridCopy) => {
-        // 2 bucles for para recorrer tanto filas como columnas
+        // Se utiliza la funcion 'produce' para generar el nuevo grid y setearlo de una forma mas clara en el estado
+        // g -> actual grid
+        // gridCopy -> nuevo grid
         for (let i = 0; i < numRows; i++) {
           for (let k = 0; k < numCols; k++) {
+            // 2 bucles for para recorrer tanto filas como columnas
+            // Calcula los vecinos existentes
             let neighbors = 0;
             operations.forEach(([x, y]) => {
               const newI = i + x;
               const newK = k + y;
               if (newI >= 0 && newI < numRows && newK >= 0 && newK < numCols) {
+                // Se validan los limites con el 'if'
                 neighbors += g[newI][newK];
               }
             });
 
             if (neighbors < 2 || neighbors > 3) {
-              gridCopy[i][k] = 0;
+              gridCopy[i][k] = 0; // Elimina a la celula
             } else if (g[i][k] === 0 && neighbors === 3) {
-              gridCopy[i][k] = 1;
+              gridCopy[i][k] = 1; // Nace una nueva celula
             }
           }
         }
@@ -114,7 +119,10 @@ function App() {
               key={`${i}-${k}`}
               onClick={() => {
                 const newGrid = produce(grid, (gridCopy) => {
-                  gridCopy[i][k] = grid[i][k] ? 0 : 1;
+                  // Se utiliza la funcion 'produce' para generar el nuevo grid y setearlo de una forma mas clara en el estado
+                  // grid -> estado actual del grid
+                  // gridCopy -> nuevo estado del grid
+                  gridCopy[i][k] = grid[i][k] ? 0 : 1; // Cambia el estado actual de la celda
                 });
                 setGrid(newGrid);
               }}
@@ -137,7 +145,7 @@ function App() {
             setRunning(!running);
             if (!running) {
               runningRef.current = true;
-              runSimulation();
+              runSimulation(); // Se llama a la funcion CallBack
             }
           }}
         >

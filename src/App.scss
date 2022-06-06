@@ -4,16 +4,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   filter: drop-shadow(0px 10px 12px #00000026);
 }
 
 .board-container {
   display: grid;
-  background-color: #f8f8f2;
   border: 8px solid #bd93f9;
   border-radius: 20px;
   padding: 4px;
   margin-top: 40px;
+  background-color: #f8f8f2;
 }
 
 /* Control Bar */
@@ -38,10 +39,10 @@ button {
   color: #ffffff;
 
   background-color: #ff79c6;
-}
 
-button:active {
-  background-color: #e262ab;
+  &:active {
+    background-color: #e262ab;
+  }
 }
 
 /* Patterns Input */
@@ -54,17 +55,14 @@ button:active {
   font-family: "Poppins", sans-serif;
   font-size: 16px;
   font-weight: 600;
-  background-color: #bd93f9;
-}
-
-.patterns-input::placeholder {
-  color: #ffffff;
-}
-
-.patterns-input:focus {
-  background-color: #a16ee7;
-}
-
-.patterns-input {
   outline: none;
+  background-color: #bd93f9;
+
+  &::placeholder {
+    color: #ffffff;
+  }
+
+  &:focus {
+    background-color: #a16ee7;
+  }
 }
