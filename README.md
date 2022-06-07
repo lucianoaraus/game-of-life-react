@@ -5,3 +5,14 @@
 Play the Game of Life, a single player game invented in 1970 by Cambridge mathematician **John Conway**.
 
  **Documentation inside the code!**
+ 
+ ## Getting Started
+
+In the project directory, you need run:
+
+### 1. `npm install`
+### 2. `npm start`
+
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+### 3. Enjoy it!
